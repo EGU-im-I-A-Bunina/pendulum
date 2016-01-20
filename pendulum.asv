@@ -1,0 +1,60 @@
+global g;
+global a;
+global F;
+global denom1;
+global uT;
+global uV;
+
+uT = [];
+uV = [];
+
+g = 9.8;
+m = 2;
+M = 8;
+a = 1 / (m + M);
+l = 0.5;
+denom1 = 4*l/3 - a*m*l;
+F=[-630.7446 -164.6591];
+
+
+Y=zeros(1,2);
+N=200;
+T0 = 0;
+T = 2;
+Ts = T0 : (T - T0)/N : T;
+H = 0.01;
+Hmin = 1.e-7;
+Hmax = 0.1;
+eps = 1.e-6;
+P = 10;
+
+x = [-pi/4
+     0];
+
+Y(1,:) = x;
+for i = 1:N
+    if x(1) > pi/6
+        x = pi3(Ts(i), Ts(i+1), x);
+    else 
+        x = pi6(Ts(i), Ts(i+1), x);
+    end
+    Y(i+1,:) = x;
+end
+
+figure;
+hold off;
+plot (Ts, Y(:,1),'b', Ts, Y(:,2),'r');
+xlabel('\it t');
+ylabel('\it x');
+legend('\it x_1', '\it x_2');
+title('Solution');
+hold on;
+
+figure;
+hold off;
+plot (uT, uV, 'g');
+xlabel('\it t');
+ylabel('\it u');
+legend('\it u');
+title('Upravlenie');
+hold on;
